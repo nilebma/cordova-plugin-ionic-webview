@@ -31,6 +31,17 @@
     return self;
 }
 
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures {
+    if (!navigationAction.targetFrame.isMainFrame) {
+      NSURL *url = [[navigationAction request] URL];
+      UIApplication *application = [UIApplication sharedApplication];
+      if ([application canOpenURL:url]) {
+        [application openURL:url];
+      }
+    }
+    return nil;
+}
+
 - (void)     webView:(WKWebView*)webView runJavaScriptAlertPanelWithMessage:(NSString*)message
     initiatedByFrame:(WKFrameInfo*)frame completionHandler:(void (^)(void))completionHandler
 {
